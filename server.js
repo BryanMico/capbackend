@@ -7,13 +7,19 @@ require('dotenv').config();
   const nodemailer = require('nodemailer');
   const crypto = require('crypto'); // For generating verification code
   const jwt = require('jsonwebtoken');
+  const corsconfig = {
+    origin: "*",
+    credential: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  };
+
 
   const { JWT_SECRET_KEY } = process.env;
 
   const app = express();
-
+app.options("", cors(corsconfig))
   // Middleware
-  app.use(cors());
+  app.use(cors(corsconfig));
   app.use(bodyParser.json());
 
   // Connect to MongoDB
