@@ -8,7 +8,7 @@ require('dotenv').config();
   const crypto = require('crypto'); // For generating verification code
   const jwt = require('jsonwebtoken');
   const corsconfig = {
-    origin: "*",
+    origin: "https://capbackend-liq2zxc5l-bryanmicos-projects.vercel.app/",
     credential: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   };
