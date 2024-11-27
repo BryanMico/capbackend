@@ -23,11 +23,9 @@ app.options("", cors(corsconfig))
   app.use(bodyParser.json());
 
   // Connect to MongoDB
-  const mongoURI = 'mongodb+srv://bryanmobphone:adminpass123@budgetapp.uk6oe.mongodb.net/?retryWrites=true&w=majority&appName=BudgetApp';
 
   // URL encode the password if it contains special characters
-  const encodedPassword = encodeURIComponent('adminpass123'); // Replace with your actual password
-  const mongoURISafe = `mongodb+srv://bryanmobphone:${encodedPassword}@budgetapp.uk6oe.mongodb.net/BudgetApp?retryWrites=true&w=majority`;
+ 
 
   const authenticateUser = (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1];
@@ -42,9 +40,14 @@ app.options("", cors(corsconfig))
     }
   };
 
-  mongoose.connect(mongoURISafe, { useNewUrlParser: true, useUnifiedTopology: true })
+  const mongoURI = process.env.MONGODB_URI;
+
+  mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    .catch(err => {
+      console.error('MongoDB connection error:', err);
+      process.exit(1);  // Exit the process with an error code if connection fails
+    });
 
   // User Schema
   const userSchema = new mongoose.Schema({
